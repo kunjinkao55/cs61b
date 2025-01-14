@@ -106,11 +106,63 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+    public int purpose(Tile t,int limit,int col,int row){
+    //limit描述一个tile能够到达的极限位置 考虑：地图边界 上一块板子如果合成了，上一块板子是边界
+        //只用考虑向上的移动
+        int site = row;
+        boolean stop = false;
+        while(!stop)
+        {
+            if(site!=limit && (board.tile(col,site+1)==null || board.tile(col,site+1).value() == t.value()))
+            {
+                site += 1;
+            }
+            else
+            {
+                stop = true;
+            }
+        }
+        return site;
+    }
+
+
+
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
+        board.setViewingPerspective(side);
+        {
+         for(int col = 0;col < board.size(); col+=1)
+         {
+             int limit = board.size()-1;
+             for(int row = board.size()-1;row>=0;row-=1)
+             {
+                 //最上面一行不需要移动
+                 //move return 的是是否有merge
+                 Tile t = board.tile(col, row);
 
-        // TODO: Modify this.board (and perhaps this.score) to account
+                 if(t == null)
+                 {
+                     continue;
+                 }
+                 int oldrow = row;
+                 int newlimit = purpose(t,limit,col,row);
+                 if (newlimit != oldrow)
+                 {
+                     changed = true;
+                 }
+                 if(board.move(col, newlimit, t))//返回是否merge的布尔值
+                 {
+                     score += t.value() * 2;
+                     limit = newlimit - 1;
+                 }
+
+
+
+             }
+         }
+        }
+
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
@@ -118,6 +170,7 @@ public class Model extends Observable {
         if (changed) {
             setChanged();
         }
+        board.setViewingPerspective(Side.NORTH);
         return changed;
     }
 
@@ -137,7 +190,12 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                if (b.tile(col, row) == null)
+                {return true;}
+            }
+        }
         return false;
     }
 
@@ -147,7 +205,16 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                if (b.tile(col, row) != null) {
+                    if (b.tile(col, row).value() == MAX_PIECE)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -158,7 +225,21 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                if (b.tile(col, row) == null) {
+                    return true;
+                }
+            }
+        }
+        for (int col = 0; col < b.size(); col += 1) {
+            for (int row = 0; row < b.size(); row += 1) {
+                if (row != b.size()-1 && b.tile(col, row).value() == b.tile(col, row + 1).value()||(row !=0 && b.tile(col, row).value() == b.tile(col, row - 1).value())||(col != b.size()-1 && b.tile(col, row).value() == b.tile(col+1, row).value())||(col !=0 && b.tile(col, row).value() == b.tile(col - 1, row ).value())) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 

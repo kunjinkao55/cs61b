@@ -1,125 +1,127 @@
 package deque;
+
 public class ArrayDeque<T> implements Deque<T> {
-    private int poSize;
-    private int neSize;
-    public T[] items;
-    public ArrayDeque(){
-        poSize = 0;
-        neSize = 0;
-        items = (T[])new Object[8];
-    }
-    /**重点 用取模运算模拟环形结构，头插相当于数组反向插入数据，类似Python的列表*/
-    /**大小*/
-    public int size(){
-        return poSize + neSize;
+    private T[] items;  // 存储元素的数组
+    private int head;   // 头部指针，指向第一个元素
+    private int tail;   // 尾部指针，指向下一个可插入的位置
+    private int size;   // 当前元素数量
+
+    // 构造函数
+    public ArrayDeque() {
+        items = (T[]) new Object[8];  // 初始容量为 8
+        head = 0;
+        tail = 0;
+        size = 0;
     }
 
-    public void resize(){
-        T[] temp = (T[]) new Object[items.length / 2];
-        int p = 0;
-        while(items[p] != null)
-        {p+=1;}
-        while(items[p] == null)
-        {p +=1;}
-        int i = 0;
-        while(items[p % items.length] != null){
-            temp[i] = items[p % items.length ];
-            i+=1;
-            p+=1;
+    // 返回双端队列的大小
+    @Override
+    public int size() {
+        return size;
+    }
+
+    // 检查双端队列是否为空
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // 在头部插入元素
+    @Override
+    public void addFirst(T item) {
+        if (size == items.length) {
+            resize(items.length * 2);  // 如果数组已满，扩容
         }
-        items = temp;
-        int tempsize = this.size();
-        neSize = 0;
-        poSize = tempsize;
+        head = (head - 1 + items.length) % items.length;  // 计算新的头部位置
+        items[head] = item;
+        size++;
     }
-    /**头节点插入*/
-    /**环形模拟: 头插相当于插入数组最末端*/
-    public void addFirst(T item){
-        if(this.size() >= items.length){
-            T[] temp = (T[]) new Object[this.size() * 2];
-            System.arraycopy(items,0,temp,0,this.size());
-            items = temp;
+
+    // 在尾部插入元素
+    @Override
+    public void addLast(T item) {
+        if (size == items.length) {
+            resize(items.length * 2);  // 如果数组已满，扩容
         }
-        /**
-         *  0 1 2 3 4 5 6 7
-         *  a b c d e ? ? f
-         *  neSize = 1,items.length = 8
-         *  下一个头插目标位置: 6 正确
-         *  因为items.length 始终大于neSize,(刚好相等的时候会扩容),所以不需要取模
-         * */
-        items[items.length - neSize - 1] = item;
-        neSize+=1;
+        items[tail] = item;
+        tail = (tail + 1) % items.length;  // 计算新的尾部位置
+        size++;
     }
 
-    /**尾节点插入*/
-    public void addLast(T item){
-        if(this.size() >= items.length){
-            T[] temp = (T[]) new Object[this.size() * 2];
-            System.arraycopy(items,0,temp,0,this.size());
-            items = temp;
+    // 移除并返回头部元素
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) {
+            return null;  // 如果双端队列为空，返回 null
         }
-        items[poSize] = item;
-        poSize+=1;
-    }
-
-    /**empty?*/
-    public boolean isEmpty(){
-        return this.size() == 0;
-    }
-
-
-    /**打印 先打印负半圈，再打印正半圈*/
-    public void printDeque(){
-        for(int i = items.length - neSize;i<items.length;i++){
-            System.out.print(items[i]+" ");
+        T item = items[head];
+        items[head] = null;  // 清除引用
+        head = (head + 1) % items.length;  // 更新头部指针
+        size--;
+        if (size > 0 && size == items.length / 4) {
+            resize(items.length / 2);  // 如果元素数量过少，缩容
         }
-        for(int i = 0;i<poSize;i++){
-            System.out.print(items[i]+" ");
+        return item;
+    }
+
+    // 移除并返回尾部元素
+    @Override
+    public T removeLast() {
+        if (isEmpty()) {
+            return null;  // 如果双端队列为空，返回 null
         }
-        System.out.println("");
+        tail = (tail - 1 + items.length) % items.length;  // 计算新的尾部位置
+        T item = items[tail];
+        items[tail] = null;  // 清除引用
+        size--;
+        if (size > 0 && size == items.length / 4) {
+            resize(items.length / 2);  // 如果元素数量过少，缩容
+        }
+        return item;
     }
 
-    /**头移除*/
-    public T removeFirst(){
-        if (this.size()==0)
-        {return null;}
-        if(this.size()< items.length / 4 && items.length < 12)
-        {this.resize();}
-        T ans = items[(items.length - neSize)%items.length];
-        items[(items.length - neSize)%items.length] = null;
-        neSize -= 1;
-        return ans;
+    // 获取指定索引的元素
+    @Override
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("索引越界");
+        }
+        return items[(head + index) % items.length];  // 计算实际索引
     }
 
-    /**尾移除*/
-    public T removeLast(){
-        if (this.size()==0)
-        {return null;}
-        if(this.size()< items.length / 4 && items.length < 12)
-        {this.resize();}
-        int index = this.size()-neSize - 1;
-        while(index < 0)
-        {index += items.length;}
-        T ans = items[(index) % items.length];
-        items[index % items.length] = null;
-        poSize -= 1;
-        return ans;
+    // 打印双端队列中的所有元素
+    @Override
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i) + " ");
+        }
+        System.out.println();
     }
 
-    /**查找*/
-    public T get(int inx){
-        return items[inx];
+    // 调整数组大小
+    private void resize(int capacity) {
+        T[] newItems = (T[]) new Object[capacity];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = get(i);  // 将元素按顺序复制到新数组
+        }
+        items = newItems;
+        head = 0;
+        tail = size;
     }
 
-    //public Iterator<T> iterator(){};
-    public boolean equals(Object o){
-        if(!(o instanceof ArrayDeque) || (this.items.length != ((ArrayDeque<?>) o).items.length)){
+    // public Iterator<T> iterator()
+    // 检查两个双端队列是否相等
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ArrayDeque)) {
             return false;
         }
-        for(int p = 0;p < items.length;p++)
-        {
-            if (this.items[p] != ((ArrayDeque<?>) o).items[p])
-            {
+        ArrayDeque<?> other = (ArrayDeque<?>) o;
+        if (this.size != other.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (!this.get(i).equals(other.get(i))) {
                 return false;
             }
         }

@@ -1,7 +1,9 @@
 package deque;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+import edu.princeton.cs.algs4.StdRandom;
 
 
 /** Performs some basic linked list tests. */

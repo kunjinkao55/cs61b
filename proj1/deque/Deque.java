@@ -1,23 +1,22 @@
 package deque;
 
 public interface Deque<T> {
-        /**头节点插入*/
-        public void addFirst(T item);
-        /**尾节点插入*/
-        public void addLast(T item);
+    /**头节点插入*/
+    void addFirst(T item);
+    /**尾节点插入*/
+    void addLast(T item);
 
-        /**大小*/
-        public int size();
-        /**打印*/
-        public void printDeque();
-        /**头移除*/
-        public T removeFirst();
-        /**尾移除*/
-        public T removeLast();
-        /**查找*/
-        public T get(int inx);
-        public default boolean isEmpty()
-        {
-                return this.size() == 0;
-        }
+    /**大小*/
+    int size();
+    /**打印*/
+    void printDeque();
+    /**头移除*/
+    T removeFirst();
+    /**尾移除*/
+    T removeLast();
+    /**查找*/
+    T get(int inx);
+    default boolean isEmpty() {
+            return this.size() == 0;
+    }
 }

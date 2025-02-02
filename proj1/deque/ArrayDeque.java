@@ -8,6 +8,8 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     private int tail;   // 尾部指针，指向下一个可插入的位置
     private int size;   // 当前元素数量
 
+    //双指针法确定头节点和尾节点位置，然后这两个值始终不为负，指向的是头部对应的实际索引也不可能为负
+
     // 构造函数
     public ArrayDeque() {
         items = (T[]) new Object[8];  // 初始容量为 8
@@ -61,6 +63,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         T item = items[head];
         items[head] = null;  // 清除引用
         head = (head + 1) % items.length;  // 更新头部指针
+        //6 -> 7 , 7 -> 0 , 8 -> 1
         size--;
         if (size > 0 && size == items.length / 4) {
             resize(items.length / 2);  // 如果元素数量过少，缩容

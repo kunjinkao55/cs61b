@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     public Object[] items;  // 存储元素的数组
-    private int head;   // 头部指针，指向第一个元素
+    private in head;   // 头部指针，指向第一个元素
     private int tail;   // 尾部指针，指向下一个可插入的位置
     private int size;   // 当前元素数量
 
@@ -141,7 +141,9 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         int p;
         int count;
         public ArrayDequeIterator(){
+
             p = 0;
+
             count = 0;
         }
         @Override
@@ -151,9 +153,11 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
 
         @Override
         public T next() {
+
             T item = (T) get(p);
             p += 1;
             count +=1;
+
             return item;
         }
     }
@@ -167,6 +171,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         ts.addLast(5.67);
         ts.printDeque();
         for(Double item:ts){
+
             System.out.print(item);
         }
     }

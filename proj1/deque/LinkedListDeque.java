@@ -1,5 +1,8 @@
 package deque;
-public class LinkedListDeque<T> implements Deque<T> {
+
+import java.util.Iterator;
+
+public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
     private static class Node<T> {
         T item;
         Node next;
@@ -127,8 +130,13 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
         return (T)sentinel.next.getRecursive(index);
     }
-     /**沟槽迭代器*/
-     //public Iterator<T> iteaator(){}
+     /**
+      * 沟槽迭代器
+      */
+     @Override
+     public Iterator<T> iterator(){
+         return new LinkedListDequeIterator();
+     }
 
      /**判断是否相等*/
      public boolean equals(Object o)
@@ -154,6 +162,25 @@ public class LinkedListDeque<T> implements Deque<T> {
          return true;
      }
 
+     private class LinkedListDequeIterator<T> implements Iterator <T>{
+         private Node<T> p;
+
+         public LinkedListDequeIterator(){
+             p = sentinel.next;
+         }
+
+         @Override
+         public boolean hasNext() {
+             return p != sentinel;
+         }
+
+         @Override
+         public T next() {
+             T item =p.item;
+             p = p.next;
+             return item;
+         }
+     }
     /**test*/
     public static void main(String args[])
     {
@@ -163,13 +190,8 @@ public class LinkedListDeque<T> implements Deque<T> {
         ts.addFirst("plj");
         ts.addLast("锟斤拷");
         ts.printDeque();
-        LinkedListDeque tss = new LinkedListDeque();
-        System.out.println(ts.isEmpty());
-        tss.addFirst(1);
-        tss.addFirst("plj");
-        tss.addLast("锟斤拷");
-        tss.removeLast();
-        tss.printDeque();
-        System.out.println(ts.equals(tss));
+        for(Object item:ts){
+            System.out.print(item);
+        }
     }
 }

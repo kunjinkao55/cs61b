@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     private T[] items;  // 存储元素的数组
     private int head;   // 头部指针，指向第一个元素
     private int tail;   // 尾部指针，指向下一个可插入的位置
@@ -13,7 +15,9 @@ public class ArrayDeque<T> implements Deque<T> {
         tail = 0;
         size = 0;
     }
-
+    public int head(){
+        return head % items.length;
+    }
     // 返回双端队列的大小
     @Override
     public int size() {
@@ -109,7 +113,9 @@ public class ArrayDeque<T> implements Deque<T> {
         tail = size;
     }
 
-    // public Iterator<T> iterator()
+    public Iterator<T> iterator(){
+        return new ArrayDequeIterator();
+    }
     // 检查两个双端队列是否相等
     @Override
     public boolean equals(Object o) {
@@ -126,5 +132,40 @@ public class ArrayDeque<T> implements Deque<T> {
             }
         }
         return true;
+    }
+
+    public class ArrayDequeIterator<T> implements Iterator<T>{
+        int p;
+        int count;
+        public ArrayDequeIterator(){
+            p = head();
+            count = 0;
+        }
+        @Override
+        public boolean hasNext() {
+            return count != size;
+        }
+
+        @Override
+        public T next() {
+            T item = (T) items[p];
+            p += 1;
+            count +=1;
+            p = p % items.length;
+            return item;
+        }
+    }
+
+    public static void main(String args[])
+    {
+        ArrayDeque ts = new ArrayDeque();
+        System.out.println(ts.isEmpty());
+        ts.addFirst(1);
+        ts.addFirst("plj");
+        ts.addLast("锟斤拷");
+        ts.printDeque();
+        for(Object item:ts){
+            System.out.print(item);
+        }
     }
 }

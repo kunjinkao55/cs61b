@@ -61,11 +61,11 @@ public class LinkedListDeque<T> implements Deque<T>,Iterable<T>{
     }
 
     /**empty?*/
-     public boolean isEmpty(){
-         if(sentinel.pre ==sentinel &&sentinel.next==sentinel)
-         {return true;}
-         return false;
-     }
+     //public boolean isEmpty(){
+         //if(sentinel.pre ==sentinel &&sentinel.next==sentinel)
+         //{return true;}
+         //return false;
+     //}
 
      /**大小*/
      public int size(){

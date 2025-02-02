@@ -5,8 +5,7 @@ public interface Deque<T> {
         public void addFirst(T item);
         /**尾节点插入*/
         public void addLast(T item);
-        /**empty?*/
-        public boolean isEmpty();
+
         /**大小*/
         public int size();
         /**打印*/
@@ -17,4 +16,8 @@ public interface Deque<T> {
         public T removeLast();
         /**查找*/
         public T get(int inx);
+        public default boolean isEmpty()
+        {
+                return this.size() == 0;
+        }
 }

@@ -3,8 +3,8 @@ package deque;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
-    private T[] items;  // 存储元素的数组
-    private int head;   // 头部指针，指向第一个元素
+    public Object[] items;  // 存储元素的数组
+    private in head;   // 头部指针，指向第一个元素
     private int tail;   // 尾部指针，指向下一个可插入的位置
     private int size;   // 当前元素数量
 
@@ -12,7 +12,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
 
     // 构造函数
     public ArrayDeque() {
-        items = (T[]) new Object[8];  // 初始容量为 8
+        items = new Object[8];  // 初始容量为 8
         head = 0;
         tail = 0;
         size = 0;
@@ -27,10 +27,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     }
 
     // 检查双端队列是否为空
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
+    //@Override
+    //public boolean isEmpty() {
+      //  return size == 0;
+    //}
 
     // 在头部插入元素
     @Override
@@ -60,8 +60,8 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         if (isEmpty()) {
             return null;  // 如果双端队列为空，返回 null
         }
-        T item = items[head];
-        items[head] = null;  // 清除引用
+        T item = this.get(0);
+        items[head % items.length] = null;  // 清除引用
         head = (head + 1) % items.length;  // 更新头部指针
         //6 -> 7 , 7 -> 0 , 8 -> 1
         size--;
@@ -78,7 +78,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
             return null;  // 如果双端队列为空，返回 null
         }
         tail = (tail - 1 + items.length) % items.length;  // 计算新的尾部位置
-        T item = items[tail];
+        T item = (T)items[tail];
         items[tail] = null;  // 清除引用
         size--;
         if (size > 0 && size == items.length / 4) {
@@ -90,10 +90,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     // 获取指定索引的元素
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("索引越界");
-        }
-        return items[(head + index) % items.length];  // 计算实际索引
+        return (T)(items[(head + index) % items.length]);  // 计算实际索引
     }
 
     // 打印双端队列中的所有元素
@@ -105,9 +102,12 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         System.out.println();
     }
 
+    public void changesize(int s){
+        this.size = s;
+    }
     // 调整数组大小
-    private void resize(int capacity) {
-        T[] newItems = (T[]) new Object[capacity];
+    public void resize(int capacity) {
+        Object[] newItems =  new Object[capacity];
         for (int i = 0; i < size; i++) {
             newItems[i] = get(i);  // 将元素按顺序复制到新数组
         }
@@ -141,7 +141,9 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         int p;
         int count;
         public ArrayDequeIterator(){
-            p = head();
+
+            p = 0;
+
             count = 0;
         }
         @Override
@@ -151,23 +153,25 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
 
         @Override
         public T next() {
-            T item = (T) items[p];
+
+            T item = (T) get(p);
             p += 1;
             count +=1;
-            p = p % items.length;
+
             return item;
         }
     }
 
     public static void main(String args[])
     {
-        ArrayDeque ts = new ArrayDeque();
+        ArrayDeque<Double> ts = new ArrayDeque();
         System.out.println(ts.isEmpty());
-        ts.addFirst(1);
-        ts.addFirst("plj");
-        ts.addLast("锟斤拷");
+        ts.addFirst(1.1);
+        ts.addFirst(3.4);
+        ts.addLast(5.67);
         ts.printDeque();
-        for(Object item:ts){
+        for(Double item:ts){
+
             System.out.print(item);
         }
     }

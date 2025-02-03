@@ -13,14 +13,12 @@ public class GuitarHero {
     public static void init() {
         for (int i = 0; i < 37; i += 1) {
             begin += PLUS;
-            char name = keyboard.charAt(i);
             keyboards[i] = new GuitarString(begin);
-            keyboards[i].rename(name);
         }
     }
-    public static void search(char n) {
+    public static void search(int n) {
         for (int i = 0; i < 37; i++) {
-            if (keyboards[i].getname() == n) {
+            if (i == n) {
                 keyboards[i].pluck();
             }
         }
@@ -31,7 +29,7 @@ public class GuitarHero {
             /* check if the user has typed a key; if so, process it */
             if (StdDraw.hasNextKeyTyped()) {
                 char key = StdDraw.nextKeyTyped();
-                search(key);
+                search(keyboard.indexOf(key));
             }
 
             /* compute the superposition of samples */

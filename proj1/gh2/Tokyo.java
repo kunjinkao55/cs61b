@@ -1,3 +1,4 @@
+/**
 package gh2;
 
 import org.junit.Test;
@@ -13,7 +14,7 @@ import java.util.zip.GZIPInputStream;
  * Requires completion of CS 61B Homework 1.
  *
  * @author Eli Lipsitz
- */
+
 public class Tokyo {
     @Test
     public void main() {
@@ -93,3 +94,4 @@ public class Tokyo {
                     "vbpv3hyCYuJ/nwwpStG8qLOrd71ZxJp4W54p5eR0849imuiiF/KfQr9dVRPfhWlP1R0YQEz8V9GSDmNyP0vL/6TovcfjAuGn79LAAA=";
 
 }
+*/

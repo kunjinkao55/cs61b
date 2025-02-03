@@ -67,8 +67,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     /**大小*/
     public int size() {
-         return size;
-     }
+        return size;
+    }
     /**打印*/
     public void printDeque() {
         Node p = sentinel.next;
@@ -132,29 +132,28 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     /**判断是否相等*/
-    public boolean equals(Object o)
-    {
-        if((!(o instanceof Deque) || (this.size() != ((Deque<?>) o).size()))) {
+    public boolean equals(Object o) {
+        Deque object;
+        if (!(o instanceof ArrayDeque)) {
+            object = (LinkedListDeque<?>) o;
+        } else {
+            object = (ArrayDeque<?>) o;
+        }
+        if (this.size != object.size()) {
             return false;
-        }else {
-            Node p1 = this.sentinel.next;
-            Node p2 = ((LinkedListDeque<?>) o).sentinel.next;
-            while(p1!= sentinel) {
-                if(!p1.item.equals(p2.item)) {
-                    return false;
-                } else {
-                    p1 = p1.next;
-                    p2 = p2.next;
-                }
+        }
+        for (int i = 0; i < size; i++) {
+            if (!this.get(i).equals(object.get(i))) {
+                return false;
             }
         }
         return true;
     }
 
-    private class LinkedListDequeIterator<T> implements Iterator <T> {
+    private class LinkedListDequeIterator<T> implements Iterator<T> {
         private Node<T> p;
 
-        public LinkedListDequeIterator() {
+        LinkedListDequeIterator() {
             p = sentinel.next;
         }
 

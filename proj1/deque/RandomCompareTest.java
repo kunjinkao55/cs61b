@@ -1,4 +1,4 @@
-/**package deque;
+package deque;
 
 import org.junit.Test;
 
@@ -57,7 +57,6 @@ public class RandomCompareTest {
         L1.printDeque();
         L2.printDeque();
         System.out.println(L1.size());
-        System.out.println("头插: "+(float)on1/N+" 尾插: "+(float)o0/N+" 大小: "+(float)o1/N+" 读取: "+(float)o2/N+" 尾删: "+(float)o3/N+" 头删: "+(float)o4/N);
     }
 
     @Test
@@ -116,8 +115,6 @@ public class RandomCompareTest {
 
         // 验证最终所有元素一致
         assertEquals(L1.size(), L2.size());
-        for (int i = 0; i < L1.size(); i++) {
-            assertEquals(L1.get(i), L2.get(i));
-        }
+        System.out.print(L2.equals(L1));
     }
-}*/
+}

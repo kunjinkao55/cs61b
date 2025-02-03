@@ -15,10 +15,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         tail = 0;
         size = 0;
     }
-    public Object[] items() {
+    private Object[] items() {
         return items;
     }
-    public int head() {
+    private int head() {
         return head % items.length;
     }
     // 返回双端队列的大小
@@ -103,11 +103,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         System.out.println();
     }
 
-    public void changesize(int s) {
+    private void changesize(int s) {
         this.size = s;
     }
     // 调整数组大小
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         Object[] newItems =  new Object[capacity];
         for (int i = 0; i < size; i++) {
             newItems[i] = get(i);  // 将元素按顺序复制到新数组
@@ -126,18 +126,24 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (!(o instanceof Deque)) {
             return false;
         }
-        if (this.size != ((Deque<?>) o).size()) {
+        Deque object;
+        if (!(o instanceof ArrayDeque)) {
+            object = (LinkedListDeque<?>) o;
+        } else {
+            object = (ArrayDeque<?>) o;
+        }
+        if (this.size != object.size()) {
             return false;
         }
         for (int i = 0; i < size; i++) {
-            if (!this.get(i).equals(((Deque<?>) o).get(i))) {
+            if (!this.get(i).equals(object.get(i))) {
                 return false;
             }
         }
         return true;
     }
 
-    public class ArrayDequeIterator<T> implements Iterator<T> {
+    private class ArrayDequeIterator<T> implements Iterator<T> {
         int p;
         int count;
         public ArrayDequeIterator() {

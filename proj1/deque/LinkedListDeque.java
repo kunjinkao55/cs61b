@@ -133,18 +133,15 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     /**判断是否相等*/
     public boolean equals(Object o) {
-        if (o == null){
+        if (o == null) {
             return false;
         }
-        Deque object;
+
         if (!(o instanceof Deque)) {
             return false;
         }
-        if (!(o instanceof ArrayDeque)) {
-            object = (LinkedListDeque<?>) o;
-        } else {
-            object = (ArrayDeque<?>) o;
-        }
+        Deque object = (Deque) o;
+
         if (this.size != object.size()) {
             return false;
         }

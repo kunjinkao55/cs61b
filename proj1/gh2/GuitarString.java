@@ -2,9 +2,6 @@ package gh2;
 
 import deque.*;
 
-import java.util.Arrays;
-
-
 //Note: This file will not compile until you complete the Deque implementations
 public class GuitarString {
     /** Constants. Do not change. In case you're curious, the keyword final

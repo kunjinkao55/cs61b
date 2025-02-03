@@ -123,18 +123,14 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     // 检查两个双端队列是否相等
     @Override
     public boolean equals(Object o) {
-        if (o == null){
+        if (o == null) {
             return false;
         }
         if (!(o instanceof Deque)) {
             return false;
         }
-        Deque object;
-        if (!(o instanceof ArrayDeque)) {
-            object = (LinkedListDeque<?>) o;
-        } else {
-            object = (ArrayDeque<?>) o;
-        }
+        Deque object = (Deque) o;
+
         if (this.size != object.size()) {
             return false;
         }

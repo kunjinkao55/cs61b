@@ -116,7 +116,7 @@ public class RandomCompareTest {
 
         // 验证最终所有元素一致
         assertEquals(L1.size(), L2.size());
-        System.out.print(L2.equals(L1));
+        System.out.print(L1.equals(null));
     }
 }
 */

@@ -1,10 +1,8 @@
 package deque;
-
 import java.util.Iterator;
-
-public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
-    public Object[] items;  // 存储元素的数组
-    private in head;   // 头部指针，指向第一个元素
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
+    private Object[] items;  // 存储元素的数组
+    private int head;   // 头部指针，指向第一个元素
     private int tail;   // 尾部指针，指向下一个可插入的位置
     private int size;   // 当前元素数量
 
@@ -17,7 +15,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         tail = 0;
         size = 0;
     }
-    public int head(){
+    private Object[] items() {
+        return items;
+    }
+    private int head() {
         return head % items.length;
     }
     // 返回双端队列的大小
@@ -78,7 +79,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
             return null;  // 如果双端队列为空，返回 null
         }
         tail = (tail - 1 + items.length) % items.length;  // 计算新的尾部位置
-        T item = (T)items[tail];
+        T item = (T) items[tail];
         items[tail] = null;  // 清除引用
         size--;
         if (size > 0 && size == items.length / 4) {
@@ -90,7 +91,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
     // 获取指定索引的元素
     @Override
     public T get(int index) {
-        return (T)(items[(head + index) % items.length]);  // 计算实际索引
+        return (T) (items[(head + index) % items.length]);  // 计算实际索引
     }
 
     // 打印双端队列中的所有元素
@@ -102,11 +103,11 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         System.out.println();
     }
 
-    public void changesize(int s){
+    private void changesize(int s) {
         this.size = s;
     }
     // 调整数组大小
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         Object[] newItems =  new Object[capacity];
         for (int i = 0; i < size; i++) {
             newItems[i] = get(i);  // 将元素按顺序复制到新数组
@@ -116,34 +117,36 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
         tail = size;
     }
 
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
     // 检查两个双端队列是否相等
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ArrayDeque)) {
+        if (o == null){
             return false;
         }
-        ArrayDeque<?> other = (ArrayDeque<?>) o;
-        if (this.size != other.size) {
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        Deque object = (Deque) o;
+
+        if (this.size != object.size()) {
             return false;
         }
         for (int i = 0; i < size; i++) {
-            if (!this.get(i).equals(other.get(i))) {
+            if (!this.get(i).equals(object.get(i))) {
                 return false;
             }
         }
         return true;
     }
 
-    public class ArrayDequeIterator<T> implements Iterator<T>{
+    private class ArrayDequeIterator<T> implements Iterator<T> {
         int p;
         int count;
-        public ArrayDequeIterator(){
-
+        ArrayDequeIterator() {
             p = 0;
-
             count = 0;
         }
         @Override
@@ -153,26 +156,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T>{
 
         @Override
         public T next() {
-
             T item = (T) get(p);
             p += 1;
-            count +=1;
-
+            count += 1;
             return item;
-        }
-    }
-
-    public static void main(String args[])
-    {
-        ArrayDeque<Double> ts = new ArrayDeque();
-        System.out.println(ts.isEmpty());
-        ts.addFirst(1.1);
-        ts.addFirst(3.4);
-        ts.addLast(5.67);
-        ts.printDeque();
-        for(Double item:ts){
-
-            System.out.print(item);
         }
     }
 }

@@ -1,5 +1,7 @@
 package gh2;
 
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +15,8 @@ import java.util.zip.GZIPInputStream;
  * @author Eli Lipsitz
  */
 public class Tokyo {
-    public static void main(String[] args) {
+    @Test
+    public void main() {
         try {
             InputStream source = new ByteArrayInputStream(Base64.getDecoder().decode(Tokyo));
             source = new GZIPInputStream(source);

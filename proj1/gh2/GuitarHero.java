@@ -18,8 +18,8 @@ public class GuitarHero {
             keyboards[i].rename(name);
         }
     }
-    public static void search(char n){
-        for (int i = 0 ; i < 37 ; i++) {
+    public static void search(char n) {
+        for (int i = 0; i < 37; i++) {
             if (keyboards[i].getname() == n) {
                 keyboards[i].pluck();
             }
@@ -43,7 +43,7 @@ public class GuitarHero {
             StdAudio.play(sample);
 
             /* advance the simulation of each guitar string by one step */
-            for (int i = 0 ; i < 37 ; i++) {
+            for (int i = 0; i < 37; i++) {
                 keyboards[i].tic();
             }
         }

@@ -17,6 +17,6 @@ public interface Deque<T> {
     /**查找*/
     T get(int inx);
     default boolean isEmpty() {
-            return this.size() == 0;
+        return this.size() == 0;
     }
 }

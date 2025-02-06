@@ -44,7 +44,7 @@ public class GuitarString {
 
         double oldhead = buffer.removeFirst();
         double newhead = buffer.get(0);
-        double newdouble = (oldhead + newhead) * 0.5 * DECAY;
+        double newdouble = (oldhead + newhead) * 0.5 * DECAY ;
         buffer.addLast(newdouble);
     }
 

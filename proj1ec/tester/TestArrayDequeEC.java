@@ -21,6 +21,9 @@ public class TestArrayDequeEC {
                     L1.addLast(randVal);
                     L2.addLast(randVal);
                     message =  message + "\n" +"addLast(" + randVal + ")" ;
+                    Integer w1 = L1.get(L1.size() - 1);
+                    Integer w2 = L2.get(L2.size() - 1);
+                    assertEquals(message,w1,w2);
                     break;
                 case 1:
                     // addFirst
@@ -28,6 +31,9 @@ public class TestArrayDequeEC {
                     L1.addFirst(randVal);
                     L2.addFirst(randVal);
                     message =  message + "\n" +"addFirst(" + randVal + ")" ;
+                    Integer b1 = L1.get(0);
+                    Integer b2 = L2.get(0);
+                    assertEquals(message,b1,b2);
                     break;
                 case 2:
                     // removeLast

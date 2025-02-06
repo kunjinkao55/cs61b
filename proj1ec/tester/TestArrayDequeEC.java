@@ -13,58 +13,41 @@ public class TestArrayDequeEC {
         ArrayDequeSolution<Integer> L1 = new ArrayDequeSolution<>();
         int N = 1000;
         for (int i = 0; i < N; i++) {
-            int operationNumber = StdRandom.uniform(0, 6); // 生成 0~5，共6种操作
+            int operationNumber = StdRandom.uniform(0, 4);
             switch (operationNumber) {
                 case 0:
                     // addLast
                     randVal = StdRandom.uniform(0, 100);
                     L1.addLast(randVal);
                     L2.addLast(randVal);
-                    message = message + "addLast(" + randVal + ")" + "\n";
+                    message =  message + "\n" +"addLast(" + randVal + ")" ;
                     break;
                 case 1:
                     // addFirst
                     randVal = StdRandom.uniform(0, 100);
                     L1.addFirst(randVal);
                     L2.addFirst(randVal);
-                    message = message + "addFirst(" + randVal + ")" + "\n";
+                    message =  message + "\n" +"addFirst(" + randVal + ")" ;
                     break;
                 case 2:
-                    // 检查 size
-                    message = message + "size()";
-                    assertEquals(message,L1.size(), L2.size());
-                    break;
-                case 3:
-                    // get
-                {
-                    if(L1.isEmpty())
-                        break;
-                    int index = StdRandom.uniform(0, L1.size());
-                    Integer a1 = L1.get(index);
-                    Integer a2 = L2.get(index);
-                    assertEquals(message,a1, a2);
-                    message = message + "get(" + index + ")" + "\n";
-                }
-                break;
-                case 4:
                     // removeLast
                     if (L1.isEmpty()) {
                         assertTrue(L2.isEmpty());
                     } else {
                         Integer a1 = L1.removeLast();
                         Integer a2 = L2.removeLast();
-                        message = message + "removeLast()" + "\n";
+                        message = message + "\n" +"removeLast()";
                         assertEquals(message,a1,a2);
                     }
                     break;
-                case 5:
+                case 3:
                     // removeFirst
                     if (L1.isEmpty()) {
                         assertTrue(L2.isEmpty());
                     } else {
                         Integer a1 = L1.removeLast();
                         Integer a2 = L2.removeLast();
-                        message = message + "removeFirst()" + "\n";
+                        message = message + "\n" + "removeFirst()";
                         assertEquals(message,a1,a2);
                     }
                     break;

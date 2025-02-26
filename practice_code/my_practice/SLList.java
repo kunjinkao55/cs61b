@@ -2,10 +2,10 @@
    * of the nakedness within. */
 public class SLList {	
 	private static class IntNode {
-		public int item;
-		public IntNode next;
+		private int item;
+		private IntNode next;
 
-		public IntNode(int i, IntNode n) {
+		private IntNode(int i, IntNode n) {
 			item = i;
 			next = n;
 			System.out.println(size);

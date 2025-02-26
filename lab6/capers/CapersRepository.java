@@ -43,10 +43,10 @@ public class CapersRepository {
      */
 
     public static void writeStory(String text) {
-    if(story.exists()) {
-        text = readContentsAsString(story) + "\n" +text;
+    if(story.exists()) {//story文件存在实际对象
+        text = readContentsAsString(story) + "\n" +text;//读出之前的字符
     }
-    writeContents(story,text);
+    writeContents(story,text);//写入story
     System.out.println(text);
     }
 
@@ -68,7 +68,7 @@ public class CapersRepository {
      * @param name String name of the Dog whose birthday we're celebrating.
      */
     public static void celebrateBirthday(String name) {
-        Dog birthdaydog = Dog.fromFile(name);
+        Dog birthdaydog = Dog.fromFile(name);//读出name为name的dog对象
         birthdaydog.haveBirthday();
         birthdaydog.saveDog();
     }

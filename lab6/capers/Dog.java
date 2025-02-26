@@ -42,8 +42,8 @@ public class Dog implements Serializable{ // TODO
      */
     public static Dog fromFile(String name) {
 
-        File dog = Utils.join(DOG_FOLDER,name);
-        return readObject(dog,Dog.class);
+        File dog = Utils.join(DOG_FOLDER,name);//加入狗窝目录
+        return readObject(dog,Dog.class);//按对象读出
     }
 
     /**
@@ -59,8 +59,8 @@ public class Dog implements Serializable{ // TODO
      * Saves a dog to a file for future use.
      */
     public void saveDog() {
-        File doge = Utils.join(DOG_FOLDER,name);//doge 是一个存储文件
-        Utils.writeObject(doge,this);
+        File doge = Utils.join(DOG_FOLDER,name);//doge 是一个存储文件，加入狗窝
+        Utils.writeObject(doge,this);//把当前对象写入doge文件
     }
 
     @Override

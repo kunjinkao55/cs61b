@@ -89,14 +89,14 @@ public class TestBSTMapExtra {
         rightChild.put('A', 1);
         rightChild.put('B', 2);
         Integer result = (Integer) rightChild.remove('A');
-        assertTrue(result.equals(new Integer(1)));
+        assertTrue(result.equals(1));
         for (int i = 0; i < 10; i++) {
             rightChild.put((char) ('C'+i), 3+i);
         }
         rightChild.put('A', 100);
-        assertTrue(((Integer) rightChild.remove('D')).equals(new Integer(4)));
-        assertTrue(((Integer) rightChild.remove('G')).equals(new Integer(7)));
-        assertTrue(((Integer) rightChild.remove('A')).equals(new Integer(100)));
+        assertTrue(((Integer) rightChild.remove('D')).equals(4));
+        assertTrue(((Integer) rightChild.remove('G')).equals(7));
+        assertTrue(((Integer) rightChild.remove('A')).equals(100));
         assertTrue(rightChild.size()==9);
 
         BSTMap leftChild = new BSTMap();
@@ -111,6 +111,21 @@ public class TestBSTMapExtra {
         assertTrue(((Integer) noChild.remove('Z')).equals(15));
         assertEquals(0, noChild.size());
         assertEquals(null, noChild.get('Z'));
+    }
+
+    @Test
+    public void testBSTMapIterator() {
+        BSTMap test = new BSTMap();
+        test.put(4,"fuck");
+        test.put(2,"you");
+        test.put(6,"puppy");
+        test.put(1,"shit");
+        test.put(3,"pussy");
+        test.put(5,"dog");
+        test.put(7,"oringe");
+        for(Object val:test){
+            System.out.print(val + " ");
+        }
     }
 
 }

@@ -118,7 +118,7 @@ public class ULLMap<K, V>  implements Map61B<K, V> {
 
         @Override
         public K next() {
-            K ret = cur.key;
+            K ret =  cur.key;
             cur = cur.next;
             return ret;
         }

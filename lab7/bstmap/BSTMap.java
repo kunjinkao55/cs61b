@@ -21,9 +21,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
                 return this;
             }
             if (k.compareTo(this.key) > 0) { // 正确的比较方式
-                return right.get(k);
+                if(right != null) {return right.get(k);}
+                return null;
             } else {
-                return left.get(k);
+                if(left != null) {return left.get(k);}
+                return null;
             }
         }
 
@@ -38,29 +40,24 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
             }
         }
 
-        public void changeVal(K k, V v) {
+        public boolean insert(K k, V v) {
             if (this.key.equals(k)) {
                 this.val = v;
+                return false;
             }
-            if (k.compareTo(this.key) > 0) { // 正确的比较方式
-                right.changeVal(k, v);
-            } else {
-                left.changeVal(k, v);
-            }
-        }
-
-        public void insert(K k, V v) {
             if(k.compareTo(this.key) > 0){
                 if(this.right == null){
                     this.right = new BSTNode(k, v);
+                    return true;
                 } else {
-                    this.right.insert(k, v);
+                    return this.right.insert(k, v);
                 }
             } else {
                 if(this.left == null){
                     this.left = new BSTNode(k, v);
+                    return true;
                 } else {
-                    this.left.insert(k, v);
+                    return this.left.insert(k, v);
                 }
             }
         }
@@ -92,7 +89,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
 
     @Override
     public V get(K key) {
-        if (bst == null || !containsKey(key)) {
+        if (bst == null) {
             return null;
         }
 
@@ -110,16 +107,16 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>{
 
     @Override
     public void put(K key, V value) {
-        if(bst != null && containsKey(key)){
-            bst.changeVal(key, value);
-            return;
-        }
+
         size += 1;
         if(bst == null){
             bst = new BSTNode(key, value);
             return;
         }
-        bst.insert(key, value);
+        if(!bst.insert(key, value))
+        {
+            size -= 1;
+        };
     }
 
     @Override

@@ -28,7 +28,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private Collection<Node>[] buckets;
     private int size;
     private int tableSize;
-    private double loadFactor;
+    private final double loadFactor;
 
     // You should probably define some more!
 
@@ -209,16 +209,86 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 //TODO:可选练习
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        if (this.containsKey(key)){
+            int site = key.hashCode() % tableSize;
+            if(site < 0){//负数处理
+                site += tableSize;
+            }
+            Collection<Node> head = buckets[site];
+            for(Node curr: head){
+                if(curr.key.equals(key)){
+                    V ans = curr.value;
+                    head.remove(curr);
+                    return ans;
+                }
+            }
+        }
+            return null;
     }
 
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (this.containsKey(key)){
+            int site = key.hashCode() % tableSize;
+            if(site < 0){//负数处理
+                site += tableSize;
+            }
+            Collection<Node> head = buckets[site];
+            for(Node curr: head){
+                if(curr.key.equals(key) && curr.value.equals(value)){
+                    V ans = curr.value;
+                    head.remove(curr);
+                    return ans;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return new MyHashMapIterator();
     }
+
+    private class MyHashMapIterator implements Iterator<K> {
+        private int bucketIndex;
+        private Iterator<Node> bucketIterator;
+
+        MyHashMapIterator() {
+            bucketIndex = 0;
+            bucketIterator = getNextBucketIterator();
+        }
+
+        /** 定位下一个非空 bucket 并返回它的 iterator */
+        private Iterator<Node> getNextBucketIterator() {
+            while (bucketIndex < buckets.length) {
+                if (!buckets[bucketIndex].isEmpty()) {
+                    return buckets[bucketIndex++].iterator();
+                }
+                bucketIndex++;
+            }
+            return null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (bucketIterator == null) {
+                return false;
+            }
+            if (bucketIterator.hasNext()) {
+                return true;
+            }
+            bucketIterator = getNextBucketIterator();
+            return bucketIterator != null && bucketIterator.hasNext();
+        }
+
+        @Override
+        public K next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return bucketIterator.next().key;
+        }
+    }
+
 }

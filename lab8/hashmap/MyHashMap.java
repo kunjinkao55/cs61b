@@ -1,9 +1,6 @@
 package hashmap;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
@@ -32,6 +29,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private int size;
     private int tableSize;
     private double loadFactor;
+
     // You should probably define some more!
 
     /** Constructors */
@@ -61,6 +59,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         loadFactor = maxLoad;
         size = 0;
         tableSize = initialSize;
+
     }
 
     /**
@@ -89,7 +88,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * OWN BUCKET DATA STRUCTURES WITH THE NEW OPERATOR!
      */
     protected Collection<Node> createBucket() {
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -103,10 +102,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @SuppressWarnings("unchecked")
     private Collection<Node>[] createTable(int tableSize) {
-        return (Collection<Node>[]) new Collection[tableSize];
+        Collection<Node>[] table =  (Collection<Node>[]) new Collection[tableSize];
+        for(int i = 0; i < tableSize; i++){
+            table[i] =this.createBucket();
+        }
+        return table;
     }
 
-    // TODO: Implement the methods of the Map61B Interface below
+
     // Your code won't compile until you do so!
     @Override
     public void clear() {
@@ -116,7 +119,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public boolean containsKey(K key) {
-        Collection<Node> bucket = buckets[key.hashCode() % tableSize];
+        int number = key.hashCode() % tableSize;
+        if(number < 0){
+            number += tableSize;
+        }
+        Collection<Node> bucket = buckets[number];
         if(bucket != null){
             for(Node node:bucket){
                 if (node.key.equals(key)) {
@@ -129,7 +136,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public V get(K key) {
-        Collection<Node> bucket = buckets[key.hashCode() % tableSize];
+        int site = key.hashCode() % tableSize;
+        if(site < 0){
+            site += tableSize;
+        }
+        Collection<Node> bucket = buckets[site];
         if(bucket != null){
             for(Node node:bucket){
                 if (node.key.equals(key)) {
@@ -147,16 +158,55 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public void put(K key, V value) {
+        //第一种情况：已经包含的key，只修改value
+        if (this.containsKey(key)){
+            int site = key.hashCode() % tableSize;
+            if(site < 0){//负数处理
+                site += tableSize;
+            }
+            Collection<Node> head = buckets[site];
+            for(Node curr: head){
+                if(curr.key.equals(key)){
+                    curr.value = value;
+                }
+            }
+            return;
+        }
+        //加入新key-value对
         size += 1;
-        int site = key.hashCode();
+        if((double) size / tableSize > loadFactor){//需要扩容
+            int newTableSize = tableSize * 2;
+            Collection<Node>[] newBuckets = createTable(newTableSize);
+            for(Collection<Node> bucket:buckets){
+                for(Node item:bucket){
+                    int site = item.key.hashCode() % newTableSize;
+                    if(site < 0){
+                        site += newTableSize;
+                    }
+                    newBuckets[site].add(createNode(item.key,item.value));
+                }
+            }
+            tableSize = newTableSize;
+            buckets = newBuckets;
+        }
+        int site = key.hashCode() % tableSize;
+        if(site < 0){
+            site += tableSize;
+        }
         buckets[site].add(createNode(key,value));
     }
-//TODO:start from this method
+
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        Set<K> keys = new HashSet<>();
+        for(Collection<Node> bucket:buckets){
+            for(Node curr:bucket){
+                keys.add(curr.key);
+            }
+        }
+        return keys;
     }
-
+//TODO:可选练习
     @Override
     public V remove(K key) {
         throw new UnsupportedOperationException();
